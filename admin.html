@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <style>
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar a {
+            float: left;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .content {
+            margin: 20px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Feedback styles */
+        .feedback-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feedback-item {
+            background-color: #f3f3f3;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+        }
+
+        .feedback-item strong {
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .feedback-item p {
+            margin: 0;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#modify" id="modifyLink">Modify</a>
+        <a href="#feedback" id="feedbackLink">Feedback</a>
+        <a href="javascript:void(0);" id="logoutBtn">Logout</a>
+    </div>
+
+    <div class="content" id="pageContent">
+        <h2>Welcome Admin!</h2>
+    </div>
+    <div>
+        <form id="addBookForm">
+            <input type="text" id="title" placeholder="Title" required>
+            <input type="text" id="author" placeholder="Author" required>
+            <input type="text" id="category" placeholder="Category" required>
+            <input type="checkbox" id="available" checked> Available
+            <input type="url" id="pdfUrl" placeholder="PDF URL" required>
+            <input type="url" id="audioUrl" placeholder="Audio URL" required>
+            <input type="url" id="imageSrc" placeholder="Image URL" required>
+            <textarea id="description" placeholder="Description" required></textarea>
+            <button type="submit">Add Book</button>
+        </form>
+        
+    </div>
+    <script>
+        document.getElementById("modifyLink").addEventListener("click", function(event) {
+            event.preventDefault();
+            var pageContent = document.getElementById("pageContent");
+            pageContent.innerHTML = '<h3>Modify Books/Users</h3>';
+            // Additional logic for modify form goes here
+        });
+
+        document.getElementById("feedbackLink").addEventListener("click", function(event) {
+    event.preventDefault();
+    fetch('http://127.0.0.1:5000/feedback/get_feedback')
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(function(feedbackList) {
+            var pageContent = document.getElementById("pageContent");
+            var html = '<h3>View Feedback</h3><ul class="feedback-list">';
+            feedbackList.forEach(function(fb) {
+                html += '<li class="feedback-item">';
+                html += '<strong>Name: </strong>' + fb.name + '<br>';
+                html += '<strong>Phone: </strong>' + fb.phone + '<br>';
+                html += '<strong>Email: </strong>' + fb.email + '<br>';
+                html += '<strong>Feedback: </strong>' + fb.feedback;
+                html += '</li>';
+            });
+            html += '</ul>';
+            pageContent.innerHTML = html;
+        })
+        .catch(function(error) {
+            console.error('Error fetching feedback:', error);
+        });
+});
+
+
+        document.getElementById("logoutBtn").addEventListener("click", function() {
+            window.location.href = "/login.html";
+        });
+    </script>
+    <script>
+        document.getElementById("addBookForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    // Collecting form data
+    var formData = {
+        title: document.getElementById("title").value,
+        author: document.getElementById("author").value,
+        category: document.getElementById("category").value,
+        available: document.getElementById("available").checked,
+        pdfUrl: document.getElementById("pdfUrl").value,
+        audioUrl: document.getElementById("audioUrl").value,
+        imageSrc: document.getElementById("imageSrc").value,
+        Description: document.getElementById("description").value
+    };
+
+    // // Sending a POST request to the Flask API
+    // fetch('http://127.0.0.1:5000/'), 
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(formData)
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         console.log('Success:', data);
+    //         // Handle success (you can update the UI to show the book was added)
+    //     })
+    //     .catch((error) => {
+    //         console.error('Error:', error);
+    //         // Handle error
+    //     });
+    });
+
+    </script>
+</body>
+</html>

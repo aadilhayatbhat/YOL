@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Internet Library Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #bookSearchQuery {
+            width: 300px;
+            height: 25px;
+        }
+
+        #searchResults {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        nav {
+            background-color: #791717;
+            overflow: hidden;
+        }
+        nav a {
+            float: left;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .book {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            width: 200px; /* Adjust width as needed */
+            text-align: left;
+        }
+
+        .book a {
+            text-decoration: none;
+            color: blue;
+        }
+        nav a.active {
+            background-color: #ddd; /* Highlight the active page */
+        }
+
+        main {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #bookSearchQuery {
+            width: 300px;
+            height: 20px;
+            margin-bottom: 10px;
+        }
+
+        #searchResults {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .book {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+            text-align: center;
+        }
+
+        footer {
+            background-color: #eeeeee;
+            text-align: center;
+            padding: 2px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<nav>
+    <a href="display.html">Home</a>
+    <a href="index.html">Genre</a>
+    <a href="contact.html">Contact</a>
+    <a href="internet.html" class="active">Internet</a>
+    <a href="login.html" class="logout-btn">Logout</a>
+</nav>
+<body>
+    <h1>Internet Library Search</h1>
+    <input type="text" id="bookSearchQuery" placeholder="Search for books...">
+    <button onclick="searchBooks()">Search</button>
+
+    <div id="searchResults"></div>
+<footer>
+        <p>&copy; Designed by Aadil Hayat Bhat</p>
+</footer>
+    <script>
+        function searchBooks() {
+            var query = document.getElementById('bookSearchQuery').value;
+            var url = 'https://openlibrary.org/search.json?q=' + encodeURIComponent(query);
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    var resultsDiv = document.getElementById('searchResults');
+                    resultsDiv.innerHTML = '';
+
+                    data.docs.forEach(book => {
+                        var div = document.createElement('div');
+                        div.className = 'book';
+
+                        var bookDetailsUrl = 'https://openlibrary.org' + book.key;
+                        div.innerHTML = '<strong><a href="' + bookDetailsUrl + '" target="_blank">' + book.title + '</a></strong><br>' +
+                                        'Author: ' + (book.author_name ? book.author_name.join(', ') : 'N/A') + '<br>' +
+                                        'First Published: ' + (book.first_publish_year ? book.first_publish_year : 'N/A');
+                        resultsDiv.appendChild(div);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>
+</html>

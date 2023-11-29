@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Online Library</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 2s ease-in-out;
+        }
+        header {
+            color: rgb(240, 23, 23);
+            text-align: center;
+            padding: 50px;
+            background: rgba(229, 229, 229, 0.5);
+        }
+        nav {
+            background-color: #d5d4d3;
+            overflow: hidden;
+        }
+        nav a {
+            float: left;
+            color: black;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .logout-btn {
+            float: right;
+            background-color: rgb(12, 162, 242);
+            color: white;
+            padding: 14px 16px;
+        }
+        main {
+            padding: 20px;
+            background-color: transparent;
+            
+        }
+        .search-container {
+            text-align: center;
+            padding: 270px 0;
+        }
+        .search-box {
+    
+            width: 25%; 
+            padding: 13px;
+            font-size: 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px; 
+            font-style: italic;
+            
+        }
+        .search-button {
+            padding: 15px 30px;
+            font-size: 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+        footer {
+            text-align: center;
+            padding: 2px;
+            background-color: #eeeeee;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            
+        }
+    </style>
+</head>
+<body>
+    
+    <nav>
+        <a href="#">Home</a>
+        <a href="index.html">Genre</a>
+        <a href="contact.html">Contact</a>
+        <a href="internet.html">Internet</a>
+        <a href="login.html" class="logout-btn">Logout</a>
+    </nav>
+    
+    <main>
+        <div class="search-container">
+            <input type="text" class="search-box" id="search-input" placeholder="Tell me your genre i will find your favourite book ... ">
+        </div>
+    
+    </main>
+    
+    <footer>
+        <p>&copy; Designed by Aadil Hayat Bhat</p>
+    </footer>
+
+    <script>
+        const backgrounds = [
+            'wallpaper/b1.jpg', 
+            'wallpaper/b3.jpg',
+            'wallpaper/b4.jpg',
+            'wallpaper/b6.jpg', 
+        ];
+        let currentBackground = 0;
+
+        function changeBackground() {
+            currentBackground = (currentBackground + 1) % backgrounds.length;
+            document.body.style.backgroundImage = 'url(' + backgrounds[currentBackground] + ')';
+        }
+
+        setInterval(changeBackground, 3000);
+    </script>
+    <script>
+        // Existing script for changing backgrounds...
+
+        // Function to handle search
+        function searchBooks() {
+            var query = document.getElementById('search-input').value;
+            query = query.charAt(0).toUpperCase() + query.slice(1).toLowerCase();
+            // Update with your API endpoint
+            var searchUrl = 'http://127.0.0.1:5000/books/search/' + query;
+            fetch(searchUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response data
+                    console.log(data);
+                })
+                .catch(error => console.error('Error:', error));
+                window.location.href = 'http://127.0.0.1:5501/books.html?category=' + encodeURIComponent(query);
+        }
+
+        // Event listener for search input
+        document.querySelector('.search-box').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                searchBooks();
+            }
+        });
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Online Library</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background-image: url('https://c4.wallpaperflare.com/wallpaper/590/899/794/cassette-minimalism-wallpaper-preview.jpg');
+    color: rgb(220, 220, 220);
+    text-align: center;
+    padding: 50px;
+}
+nav {
+    background-color: #e49d4b;
+    overflow: hidden;
+}
+nav a {
+    float: left;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+nav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+.logout-btn {
+    float: right;
+    background-color: rgb(12, 162, 242);
+    color: white;
+    padding: 14px 16px;
+}
+main {
+    padding: 20px;
+    padding-bottom: 50px;
+    background-color: #f9f9f9;
+}
+.catalog {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+.category {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+    cursor: pointer;
+}
+.category img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+.books-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.book {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    width: 200px;
+    text-align: center;
+    cursor: pointer;
+}
+/* CSS for animated radio indicator */
+.radio-playing {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: red;
+    animation: playing 1s infinite alternate;
+}
+footer {
+    text-align: center;
+    padding: 2px;
+    background-color: #eeeeee;
+    width: 100%;
+    bottom: 0;
+}
+
+.catalog {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Changed from space-around to flex-start */
+    margin-top: 10px;
+}
+
+.category {
+    border: 1px solid #ccc;
+    padding: 20px;
+    justify-content: center;
+    width: calc(20% - 20px); /* Set width to 20% minus margin */
+    text-align: center;
+    cursor: pointer;
+    margin: 10px; /* Add margin to create spacing between categories */
+}
+
+/* Add media query for responsiveness on smaller screens */
+@media (max-width: 768px) {
+    .category {
+        width: calc(50% - 20px); /* Set width to 50% minus margin for smaller screens */
+    }
+}
+
+@keyframes playing {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+}
+    
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Tune in with your favourite Book</h1>
+    <div id="radioPlayer"><span id="radioIndicator"></span></div>
+</header>
+
+<nav>
+    <a href="display.html">Home</a>
+    <a href="#mybooks">Genre</a>
+    <a href="contact.html">Contact</a>
+    <a href="internet.html">Internet</a>
+    <a href="login.html" class="logout-btn">Logout</a> 
+</nav>
+
+<main>
+    <div class="catalog">
+
+    </div>
+
+</main>
+
+<footer>
+    <p>&copy; Designed by Aadil Hayat Bhat</p>
+</footer>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Fetch the top-voted radio station
+      fetch('https://de1.api.radio-browser.info/json/stations/topvote/1')
+        .then(response => response.json())
+        .then(data => {
+          const station = data[0];
+          const streamUrl = station.url;
+          // Function to add the radio player to the header
+          const radioDiv = document.getElementById('radioPlayer');
+          radioDiv.innerHTML += `
+            <audio controls>
+              <source src="${streamUrl}" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+          `;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById('radioPlayer').innerText = 'Failed to load radio.';
+        });
+    });
+  </script>
+<script src="script.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to fetch categories
+        function fetchCategories() {
+            fetch('http://127.0.0.1:5000/category/categories')
+            .then(response => response.json())
+            .then(data => {
+                const categories = data;
+                const categoryDiv = document.querySelector('.catalog');
+                categoryDiv.innerHTML = '';
+                
+                categories.forEach(category => {
+                    const newCategory = document.createElement('div');
+                    newCategory.className = 'category';
+                    newCategory.setAttribute('data-category', category.name);
+                    newCategory.innerHTML = `
+                        <h3>${category.name}</h3>
+                        <img src="${category.thumbnail}" alt="${category.name}">
+                    `;
+
+                    // Add click event listener to navigate to books.html
+                    newCategory.addEventListener('click', function() {
+                        window.location.href = `books.html?category=${category.name}`;
+                    });
+
+                    categoryDiv.appendChild(newCategory);
+                });
+            })
+            .catch(error => {
+                console.error('Failed to retrieve categories:', error);
+            });
+        }
+
+        // Fetch categories on page load
+        fetchCategories();
+    });
+</script>
+
+</body>
+</html>

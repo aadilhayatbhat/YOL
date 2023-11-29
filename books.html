@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Online Library</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background-image: url('https://c4.wallpaperflare.com/wallpaper/590/899/794/cassette-minimalism-wallpaper-preview.jpg');
+    color: rgb(220, 220, 220);
+    text-align: center;
+    padding: 50px;
+}
+nav {
+    background-color: #e53d3d;
+    overflow: hidden;
+    align-items: center;
+    display:flex;
+}
+nav a {
+    float: left;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+nav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+.logout-btn {
+    float: right;
+    background-color: rgb(12, 162, 242);
+    color: white;
+    padding: 14px 16px;
+}
+main {
+    padding: 20px;
+    padding-bottom: 50px;
+    background-color: #f9f9f9;
+}
+.catalog {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+.category {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+    cursor: pointer;
+}
+.category img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+.books-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.book {
+  
+    padding: 10px;
+    margin: 15px;
+    width: 22%;
+    text-align: center;
+    cursor: pointer;
+}
+.book img {
+    width: 150px; 
+    height: auto;
+    object-fit: cover; 
+}
+
+footer {
+    text-align: center;
+    padding: 2px;
+    background-color: #eeeeee;
+    width: 100%;
+    bottom: 0;
+}
+
+#search-form {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#search-bar {
+    padding: 5px;
+    /* padding-top: 15px;  */
+    width: 300px; 
+    border: none; 
+    outline: none; 
+    font-size: 16px; 
+    background-color: rgba(241, 241, 241, 0.8); 
+    border-radius: 25px; 
+}
+
+/* CSS for animated radio indicator */
+.radio-playing {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: red;
+    animation: playing 1s infinite alternate;
+}
+
+@keyframes playing {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+}
+    
+</style>
+</head>
+<body>
+    <header>
+        <h1>Tune in with your favourite Book</h1>
+        <div id="radioPlayer"><span id="radioIndicator"></span></div>
+    </header>
+    
+    <nav>
+        <a href="display.html">Home</a>
+        <a href="index.html">Genre</a>
+        <a href="contact.html">Contact</a>
+        <a href="internet.html">Internet</a>
+        <form id="search-form" action="#">
+            <input type="text" id="search-bar" placeholder="Search books...">
+        </form>
+        <a href="login.html" class="logout-btn">Logout</a> 
+    </nav>
+    
+    <main>
+        <div class="books-container">
+            <!-- Books will be populated here -->
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; Designed by Aadil Hayat Bhat</p>
+    </footer>
+</footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // Fetch the top-voted radio station
+        fetch('https://de1.api.radio-browser.info/json/stations/topvote/1')
+            .then(response => response.json())
+            .then(data => {
+            const station = data[0];
+            const streamUrl = station.url;
+            // Function to add the radio player to the header
+            const radioDiv = document.getElementById('radioPlayer');
+            radioDiv.innerHTML += `
+                <audio controls>
+                <source src="${streamUrl}" type="audio/mpeg">
+                Your browser does not support the audio element.
+                </audio>
+            `;
+            })
+            .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('radioPlayer').innerText = 'Failed to load radio.';
+            });
+        });
+    </script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryName = urlParams.get('category');
+        
+            if (categoryName) {
+                fetch(`http://127.0.0.1:5000/books/category/${categoryName}`)
+                .then(response => response.json())
+                .then(data => {
+                    const books = data;
+                    const booksDiv = document.querySelector('.books-container');
+                    booksDiv.innerHTML = '';
+                    
+                    books.forEach(book => {
+                        const newBook = document.createElement('div');
+                        newBook.className = 'book';
+                        newBook.innerHTML = `
+                        <a  href="product.html?bookID=${book.bookID}">
+                            <img src="${book.imageSrc}" alt="${book.title}" style="width:100px; height:auto;">
+                        </a>
+                            <h3>${book.title}</h3>
+                            <p>${book.author}</p>
+                        
+                        `;
+        
+                        booksDiv.appendChild(newBook);
+                    });
+                })
+                .catch(error => {
+                    console.error('Failed to retrieve books:', error);
+                });
+            } else {
+                alert('No category selected.');
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event listener for the search bar submission
+            document.getElementById('search-form').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the traditional form submission
+                const query = document.getElementById('search-bar').value;
+                searchBooks(query);
+            });
+        });
+
+        function searchBooks(query) {
+            // Update the endpoint URL with your search API endpoint
+            fetch(`http://127.0.0.1:5000/books/title/${query}`)
+            .then(response => response.json())
+            .then(data => {
+                const books = data;
+                const booksDiv = document.querySelector('.books-container');
+                booksDiv.innerHTML = ''; // Clear previous results
+                console.log(query);
+                // Dynamically create book entries and append to the container
+                books.forEach(book => {
+                    const newBook = document.createElement('div');
+                    newBook.className = 'book';
+                    newBook.innerHTML = `
+                    <a href="product.html?bookID=${book.bookID}">
+                        <img src="${book.imageSrc}" alt="${book.title}" style="width:100px; height:auto;">
+                    </a>
+                        <h3>${book.title}</h3>
+                        <p>${book.author}</p>
+                    `;
+
+                    booksDiv.appendChild(newBook);
+                });
+            })
+            .catch(error => {
+                console.error('Failed to search for books:', error);
+            });
+        }
+    </script>
+
+
+</body>
+</html>
