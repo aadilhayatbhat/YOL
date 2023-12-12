@@ -3,7 +3,7 @@ from pymongo import MongoClient
 
 feedback_bp = Blueprint('feedback_bp', __name__)
 
-client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient('mongodb+srv://serveradmin:<Password123>@cluster0.4qwnmiz.mongodb.net/')
 db = client['Librarymanagement'] 
 feedback_collection = db.feedback
 
