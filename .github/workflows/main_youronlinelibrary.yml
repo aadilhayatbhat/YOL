@@ -16,11 +16,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Check Python version
+        run: python --version
+
 
       - name: Set up Python version
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.11'
+          python-version: '3.8'
 
       - name: Create and start virtual environment
         run: |
