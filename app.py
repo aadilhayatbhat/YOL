@@ -14,6 +14,10 @@ app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb+srv://serveradmin:Password123@cluster0.4qwnmiz.mongodb.net/Librarymanagement?retryWrites=true&w=majority"
 mongo = PyMongo(app)
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
 # Initialize
 student_init_app(app)
 book_init_app(app)
