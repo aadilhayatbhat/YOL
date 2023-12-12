@@ -11,7 +11,7 @@ from feedback import init_app as feedback_init_app,feedback_bp
 from wallpapers import init_app as wallpapers_init_app, wallpapers_bp
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb+srv://serveradmin:<Password123>@cluster0.4qwnmiz.mongodb.net/"
+app.config["MONGO_URI"] = "mongodb+srv://serveradmin:Password123@cluster0.4qwnmiz.mongodb.net/Librarymanagement?retryWrites=true&w=majority"
 mongo = PyMongo(app)
 
 # Initialize

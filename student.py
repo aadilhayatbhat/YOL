@@ -1,5 +1,10 @@
 from flask import Blueprint, request, jsonify
 from flask_pymongo import PyMongo
+from pymongo import MongoClient
+
+client = MongoClient('mongodb+srv://serveradmin:Password123@cluster0.4qwnmiz.mongodb.net/Librarymanagement?retryWrites=true&w=majority')
+db = client['Librarymanagement'] 
+
 
 # Function to serialize MongoDB data
 def serialize_data(data):

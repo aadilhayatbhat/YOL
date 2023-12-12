@@ -3,7 +3,7 @@ from pymongo import MongoClient
 import hashlib
 
 # Initialize MongoDB client
-client = MongoClient('mongodb+srv://serveradmin:<Password123>@cluster0.4qwnmiz.mongodb.net/')
+client = MongoClient('mongodb+srv://serveradmin:Password123@cluster0.4qwnmiz.mongodb.net/Librarymanagement?retryWrites=true&w=majority')
 db = client['Librarymanagement']
 
 admin_bp = Blueprint('admin_bp', __name__)

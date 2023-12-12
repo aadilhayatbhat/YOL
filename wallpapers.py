@@ -1,8 +1,13 @@
 from flask import Blueprint, jsonify
 from flask_pymongo import PyMongo
+from pymongo import MongoClient
 from bson import ObjectId
 
 wallpapers_bp = Blueprint('wallpapers', __name__)
+
+client = MongoClient('mongodb+srv://serveradmin:Password123@cluster0.4qwnmiz.mongodb.net/Librarymanagement?retryWrites=true&w=majority')
+db = client['Librarymanagement'] 
+
 
 def init_app(app):
     global mongo

@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
 
+
 feedback_bp = Blueprint('feedback_bp', __name__)
 
-client = MongoClient('mongodb+srv://serveradmin:<Password123>@cluster0.4qwnmiz.mongodb.net/')
+client = MongoClient('mongodb+srv://serveradmin:Password123@cluster0.4qwnmiz.mongodb.net/Librarymanagement?retryWrites=true&w=majority')
 db = client['Librarymanagement'] 
 feedback_collection = db.feedback
 

@@ -1,5 +1,10 @@
 from flask import Blueprint, request, jsonify, session
 from flask_pymongo import PyMongo
+from pymongo import MongoClient
+
+client = MongoClient('mongodb+srv://serveradmin:Password123@cluster0.4qwnmiz.mongodb.net/Librarymanagement?retryWrites=true&w=majority')
+db = client['Librarymanagement'] 
+
 
 # Define Blueprint
 login_api = Blueprint('login_api', __name__)

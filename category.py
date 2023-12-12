@@ -1,9 +1,10 @@
 from flask import Blueprint, jsonify
 from pymongo import MongoClient
 
+
 category_api = Blueprint('category_api', __name__)
 
-client = MongoClient('mongodb+srv://serveradmin:<Password123>@cluster0.4qwnmiz.mongodb.net/')  # Replace with your MongoDB connection string
+client = MongoClient('mongodb+srv://serveradmin:Password123@cluster0.4qwnmiz.mongodb.net/Librarymanagement?retryWrites=true&w=majority')  # Replace with your MongoDB connection string
 db = client['Librarymanagement']
 
 @category_api.route('/categories', methods=['GET'])
