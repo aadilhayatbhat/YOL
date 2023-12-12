@@ -1,3 +1,5 @@
 {
-    "liveServer.settings.port": 5501
+    "liveServer.settings.port": 5501,
+    "appService.defaultWebAppToDeploy": "/subscriptions/69724a39-0e22-47c6-8575-bb48f0f4bf5f/resourceGroups/DBS/providers/Microsoft.Web/sites/youronlinelibrary",
+    "appService.deploySubpath": "."
 }
