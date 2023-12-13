@@ -87,6 +87,53 @@
             width: 100%;
             bottom: 0;
         }
+        /* CSS for screens with a maximum width of 768px (typical for mobile devices) */
+        @media (max-width: 768px) {
+            header {
+                padding: 20px; /* Reduce header padding for smaller screens */
+            }
+
+            .product-page {
+                flex-direction: column; /* Stack product details below image on smaller screens */
+                align-items: center; /* Center-align product details */
+            }
+
+            .product-image img {
+                width: 100%; /* Make the book image occupy the full width of the container */
+                height: auto; /* Ensure image aspect ratio is maintained */
+            }
+
+            .product-details {
+                margin-left: 0; /* Remove left margin for product details */
+                text-align: center; /* Center-align text in product details */
+            }
+
+            .action-buttons a {
+                width: 80%; /* Make action buttons wider for easier tapping */
+                margin: 10px auto; /* Center-align action buttons and add some vertical spacing */
+            }
+        }
+
+        /* CSS for screens with a minimum width of 769px (typical for desktops) */
+        @media (min-width: 769px) {
+            .product-page {
+                margin: 20px; /* Restore margin for desktop screens */
+            }
+
+            .product-image img {
+                width: 300px; /* Restore image width for desktop screens */
+                height: 400px;
+            }
+
+            .product-details {
+                margin-left: 20px; /* Restore left margin for desktop screens */
+            }
+
+            .action-buttons a {
+                width: 200px; /* Restore action button width for desktop screens */
+            }
+        }
+
     </style>
 </head>
 

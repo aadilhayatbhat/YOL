@@ -107,6 +107,31 @@
             bottom: 0;
             width: 100%;
         }
+         /* Media Query for Small Screens (max-width: 600px) */
+        @media (max-width: 600px) {
+            header {
+                padding: 30px; /* Adjust header padding for small screens */
+            }
+
+            .contact-container {
+                flex-direction: column; /* Stack image and form on small screens */
+            }
+
+            .image-container,
+            .form-container {
+                width: 100%; /* Make both containers occupy full width on small screens */
+            }
+        }
+
+        /* Media Query for Medium Screens (min-width: 601px) and (max-width: 1024px) */
+        @media (min-width: 601px) and (max-width: 1024px) {
+            /* Add your CSS styles for medium screens here if needed */
+        }
+
+        /* Media Query for Large Screens (min-width: 1025px) */
+        @media (min-width: 1025px) {
+            /* Add your CSS styles for large screens here if needed */
+        }
     </style>
 </head>
 <body>

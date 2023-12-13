@@ -14,7 +14,7 @@ app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb+srv://serveradmin:Password123@cluster0.4qwnmiz.mongodb.net/Librarymanagement?retryWrites=true&w=majority"
 mongo = PyMongo(app)
 
-@app.route('/login')
+@app.route('/')
 def login():
     return render_template('login.html')
 
@@ -27,7 +27,7 @@ feedback_init_app(app)
 wallpapers_init_app(app) 
 
 
-CORS(app)
+
 app.secret_key = "your_secret_key_here"
 
 # Register Blueprints for other modules
@@ -39,10 +39,6 @@ app.register_blueprint(feedback_bp, url_prefix='/feedback')
 app.register_blueprint(wallpapers_bp, url_prefix='/api')
 
 if __name__ == '__main__':
-    try:
-        # Try to set the desired locale
-        locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
-    except locale.Error:
-        # Handle the error by setting a default locale
-        locale.setlocale(locale.LC_ALL, 'C')
-    app.run(port=5501)
+    app.run(debug=True)
+
+CORS(app)

@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, session
 from flask_pymongo import PyMongo
 from pymongo import MongoClient
+from flask_cors import CORS
 
 client = MongoClient('mongodb+srv://serveradmin:Password123@cluster0.4qwnmiz.mongodb.net/Librarymanagement?retryWrites=true&w=majority')
 db = client['Librarymanagement'] 
