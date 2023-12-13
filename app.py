@@ -37,3 +37,12 @@ app.register_blueprint(login_api, url_prefix='/login')
 app.register_blueprint(category_api, url_prefix='/category')
 app.register_blueprint(feedback_bp, url_prefix='/feedback')
 app.register_blueprint(wallpapers_bp, url_prefix='/api')
+
+if __name__ == '__main__':
+    try:
+        # Try to set the desired locale
+        locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+    except locale.Error:
+        # Handle the error by setting a default locale
+        locale.setlocale(locale.LC_ALL, 'C')
+    app.run(port=5501)
